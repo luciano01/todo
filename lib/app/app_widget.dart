@@ -12,7 +12,8 @@ class AppWidget extends StatelessWidget {
         textTheme: GoogleFonts.poppinsTextTheme(
           Theme.of(context).textTheme,
         ),
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.white,
+        accentColor: Color(0xFF2196F3),
       ),
     ).modular();
   }
