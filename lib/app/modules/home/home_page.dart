@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:todo/app/modules/home/components/app_bar_title_widget.dart';
-import 'package:todo/app/modules/home/components/drawer_widget.dart';
 import 'package:todo/app/modules/home/components/fab_widget.dart';
 import 'package:todo/app/modules/home/components/list_filter_widget.dart';
 import 'package:todo/app/modules/home/components/list_item_widget.dart';
@@ -19,9 +18,9 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      drawer: DrawerWidget(),
       appBar: AppBar(
         title: AppBarTitleWidget(),
+        leading: Icon(Icons.menu),
         elevation: 0,
       ),
       floatingActionButton: FabWidget(),
