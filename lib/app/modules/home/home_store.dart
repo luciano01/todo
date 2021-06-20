@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:todo/app/shared/models/todo_store.dart';
 import 'package:todo/app/shared/repository/app_repository_interface.dart';
@@ -23,4 +24,15 @@ abstract class HomeStoreBase with Store {
 
   Future<void> update({TodoStore? todo}) async =>
       _repository.udpate(todo: todo);
+
+  AutovalidateMode autoValidate = AutovalidateMode.disabled;
+
+  String? validateTaskName(String? value) {
+    if (value!.length <= 3) {
+      autoValidate = AutovalidateMode.always;
+      return 'Required field';
+    } else {
+      return null;
+    }
+  }
 }

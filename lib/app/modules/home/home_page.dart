@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:todo/app/modules/home/components/app_bar_title_widget.dart';
-import 'package:todo/app/modules/home/components/fab_widget.dart';
 import 'package:todo/app/modules/home/components/list_filter_widget.dart';
 import 'package:todo/app/modules/home/components/list_item_widget.dart';
 import 'package:todo/app/modules/home/home_store.dart';
@@ -18,6 +17,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final HomeStore store = Modular.get();
 
+  final _formKey = GlobalKey<FormState>();
+
+  TodoStore? _todo;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +30,13 @@ class _HomePageState extends State<HomePage> {
         leading: Icon(Icons.menu),
         elevation: 0,
       ),
-      floatingActionButton: FabWidget(),
+      floatingActionButton: FloatingActionButton(
+        mini: true,
+        child: Icon(Icons.add),
+        onPressed: () {
+          addTask();
+        },
+      ),
       body: Column(
         children: [
           Padding(
@@ -114,6 +123,9 @@ class _HomePageState extends State<HomePage> {
                         todo.isCompleted = !todo.isCompleted!;
                         store.update(todo: todo);
                       },
+                      onTap: () {
+                        addTask(todo: todo);
+                      },
                     ),
                   );
                 },
@@ -122,6 +134,103 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+    );
+  }
+
+  addTask({TodoStore? todo}) {
+    _todo = todo ?? TodoStore();
+    return showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return Form(
+          key: _formKey,
+          autovalidateMode: store.autoValidate,
+          child: Wrap(
+            children: <Widget>[
+              Padding(
+                padding: MediaQuery.of(context).viewInsets,
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16),
+                    ),
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Task name',
+                          ),
+                          initialValue: _todo!.name,
+                          validator: store.validateTaskName,
+                          onChanged: _todo!.setName,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      ListTile(
+                        leading: Container(
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color:
+                                Theme.of(context).accentColor.withOpacity(0.3),
+                          ),
+                          child: Icon(Icons.today,
+                              color: Theme.of(context).accentColor),
+                        ),
+                        title: Text('Friday 18, January'),
+                        subtitle: Text('Select a date'),
+                      ),
+                      ListTile(
+                        leading: Container(
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color:
+                                Theme.of(context).accentColor.withOpacity(0.3),
+                          ),
+                          child: Icon(Icons.access_time_rounded,
+                              color: Theme.of(context).accentColor),
+                        ),
+                        title: Text('11:15 AM'),
+                        subtitle: Text('Select a time'),
+                      ),
+                      SizedBox(height: 40),
+                      Container(
+                        width: 200,
+                        height: 50,
+                        child: ElevatedButton(
+                          child: Text('Create Task'),
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              print('Is Valid!');
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
