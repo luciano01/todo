@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:todo/app/shared/models/todo_store.dart';
 
 class ListItemWidget extends StatelessWidget {
-  const ListItemWidget({Key? key}) : super(key: key);
+  final TodoStore todo;
+  final void Function()? onPressedCompleteTask;
+  const ListItemWidget({
+    Key? key,
+    required this.todo,
+    required this.onPressedCompleteTask,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
       child: Row(
         children: [
           Container(
@@ -21,18 +28,23 @@ class ListItemWidget extends StatelessWidget {
           Expanded(
             child: ListTile(
               leading: IconButton(
-                icon: Icon(Icons.check_circle_outline),
-                onPressed: () {},
+                icon: todo.isCompleted!
+                    ? Icon(
+                        Icons.check_circle,
+                        color: Theme.of(context).accentColor,
+                      )
+                    : Icon(Icons.check_circle_outline),
+                onPressed: onPressedCompleteTask,
               ),
               title: Text(
-                'Design Review',
+                todo.name!,
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: 18,
                 ),
               ),
               subtitle: Text(
-                '08:30 - Jan, 29',
+                '${todo.time!} - ${todo.date!}',
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: 14,
