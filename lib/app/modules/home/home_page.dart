@@ -171,9 +171,10 @@ class _HomePageState extends State<HomePage> {
                           initialValue: _todo!.name,
                           validator: store.validateTaskName,
                           onChanged: _todo!.setName,
+                          keyboardType: TextInputType.text,
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                       ListTile(
                         leading: Container(
                           padding: EdgeInsets.all(12),
@@ -185,8 +186,25 @@ class _HomePageState extends State<HomePage> {
                           child: Icon(Icons.today,
                               color: Theme.of(context).accentColor),
                         ),
-                        title: Text('Friday 18, January'),
+                        title: Observer(builder: (_) {
+                          return _todo!.date == null
+                              ? Text(
+                                  '${DateTime.now().month}/${DateTime.now().day}')
+                              : Text(_todo!.date!);
+                        }),
                         subtitle: Text('Select a date'),
+                        onTap: () async {
+                          DateTime? picked = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2030),
+                          );
+                          if (picked != null) {
+                            String date = '${picked.month}/${picked.day}';
+                            _todo!.setDate(date);
+                          }
+                        },
                       ),
                       ListTile(
                         leading: Container(
@@ -199,10 +217,32 @@ class _HomePageState extends State<HomePage> {
                           child: Icon(Icons.access_time_rounded,
                               color: Theme.of(context).accentColor),
                         ),
-                        title: Text('11:15 AM'),
+                        title: Observer(builder: (_) {
+                          return _todo!.time == null
+                              ? Text(
+                                  '${TimeOfDay.now().hour}:${TimeOfDay.now().minute}')
+                              : Text(_todo!.time!);
+                        }),
                         subtitle: Text('Select a time'),
+                        onTap: () async {
+                          TimeOfDay? picked = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
+                            builder: (context, child) {
+                              return Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: child!,
+                              );
+                            },
+                          );
+
+                          if (picked != null) {
+                            String time = '${picked.hour}:${picked.minute}';
+                            _todo!.setTime(time);
+                          }
+                        },
                       ),
-                      SizedBox(height: 40),
+                      SizedBox(height: 20),
                       Container(
                         width: 200,
                         height: 50,
@@ -218,7 +258,15 @@ class _HomePageState extends State<HomePage> {
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              print('Is Valid!');
+                              store.save(todo: _todo);
+                              Modular.to.pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: _todo!.uid == null
+                                      ? Text('Task created successfully!')
+                                      : Text('Task updated successfully!'),
+                                ),
+                              );
                             }
                           },
                         ),

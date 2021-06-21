@@ -7,7 +7,7 @@ class TodoStore extends _TodoStoreBase with _$TodoStore {
   TodoStore({
     String? uid,
     String? name,
-    bool? isCompleted,
+    bool? isCompleted = false,
     String? date,
     String? time,
   }) : super(

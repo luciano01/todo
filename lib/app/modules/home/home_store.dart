@@ -30,9 +30,21 @@ abstract class HomeStoreBase with Store {
   String? validateTaskName(String? value) {
     if (value!.length <= 3) {
       autoValidate = AutovalidateMode.always;
-      return 'Required field';
+      return 'Cannot be empty or shorter than 3 characters.';
     } else {
       return null;
+    }
+  }
+
+  void save({TodoStore? todo}) {
+    String date = '${DateTime.now().month}/${DateTime.now().day}';
+    String time = '${TimeOfDay.now().hour}:${TimeOfDay.now().minute}';
+    if (todo!.uid == null) {
+      if (todo.date == null) todo.setDate(date);
+      if (todo.time == null) todo.setTime(time);
+      _repository.create(todo: todo);
+    } else {
+      _repository.udpate(todo: todo);
     }
   }
 }
