@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AppBarTitleWidget extends StatelessWidget {
-  final String? today;
-  const AppBarTitleWidget({Key? key, this.today}) : super(key: key);
+  final String? monthName;
+  final int? day;
+  const AppBarTitleWidget({
+    Key? key,
+    this.monthName,
+    this.day,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,7 @@ class AppBarTitleWidget extends StatelessWidget {
         ),
         children: [
           TextSpan(
-            text: today,
+            text: '$monthName, $day',
             style: TextStyle(
               fontWeight: FontWeight.normal,
               fontSize: 18,

@@ -28,8 +28,9 @@ class AddTaskPageState extends State<AddTaskPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        elevation: 0,
         title: Text(_todo!.uid == null ? 'Create a New Task' : 'Update a Task'),
+        elevation: 0,
+        centerTitle: true,
       ),
       body: Form(
         key: _formKey,
@@ -45,7 +46,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _textField(
-                      labelText: 'Task name',
+                      hintText: 'Task name',
                       initialValue: _todo!.name,
                       validator: store.validateTaskName,
                       onChanged: _todo!.setName,
@@ -63,6 +64,17 @@ class AddTaskPageState extends State<AddTaskPage> {
                             initialDate: DateTime.now(),
                             firstDate: DateTime.now(),
                             lastDate: DateTime(2030),
+                            builder: (context, child) {
+                              return Theme(
+                                data: ThemeData.light().copyWith(
+                                  colorScheme: ColorScheme.light(
+                                      primary: Theme.of(context).accentColor),
+                                  buttonTheme: ButtonThemeData(
+                                      textTheme: ButtonTextTheme.primary),
+                                ),
+                                child: child!,
+                              );
+                            },
                           );
                           if (picked != null) {
                             String date = '${picked.month}/${picked.day}';
@@ -86,9 +98,17 @@ class AddTaskPageState extends State<AddTaskPage> {
                             context: context,
                             initialTime: TimeOfDay.now(),
                             builder: (context, child) {
-                              return Directionality(
-                                textDirection: TextDirection.rtl,
-                                child: child!,
+                              return Theme(
+                                data: ThemeData.light().copyWith(
+                                  colorScheme: ColorScheme.light(
+                                      primary: Theme.of(context).accentColor),
+                                  buttonTheme: ButtonThemeData(
+                                      textTheme: ButtonTextTheme.primary),
+                                ),
+                                child: Directionality(
+                                  textDirection: TextDirection.rtl,
+                                  child: child!,
+                                ),
                               );
                             },
                           );
@@ -120,6 +140,8 @@ class AddTaskPageState extends State<AddTaskPage> {
                             ? 'Create Task'.toUpperCase()
                             : 'Update Task'.toUpperCase()),
                         style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Theme.of(context).accentColor),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
@@ -149,7 +171,7 @@ class AddTaskPageState extends State<AddTaskPage> {
   }
 
   Widget _textField({
-    required String? labelText,
+    required String? hintText,
     required String? initialValue,
     required String? Function(String?)? validator,
     required void Function(String)? onChanged,
@@ -157,12 +179,14 @@ class AddTaskPageState extends State<AddTaskPage> {
   }) {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: labelText,
+        hintText: hintText,
+        hintStyle: TextStyle(fontSize: 26),
       ),
       initialValue: initialValue,
       validator: validator,
       onChanged: onChanged,
       keyboardType: keyboardType,
+      style: TextStyle(fontSize: 26),
     );
   }
 

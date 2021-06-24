@@ -5,6 +5,7 @@ import 'package:todo/app/modules/home/components/app_bar_title_widget.dart';
 import 'package:todo/app/modules/home/components/list_item_widget.dart';
 import 'package:todo/app/modules/home/home_store.dart';
 import 'package:todo/app/shared/models/todo_store.dart';
+import 'package:todo/app/shared/utils/date_convert.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final HomeStore store = Modular.get();
+  final DateConvert dateConvert = DateConvert();
 
   String? today;
 
@@ -30,9 +32,19 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        title: AppBarTitleWidget(today: today),
         leading: Icon(Icons.menu),
+        title: AppBarTitleWidget(
+          monthName: dateConvert.monthIntoName(DateTime.now().month),
+          day: DateTime.now().day,
+        ),
+        centerTitle: true,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {},
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),

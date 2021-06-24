@@ -13,7 +13,7 @@ class AppWidget extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
         primaryColor: Colors.white,
-        accentColor: Color(0xFF2196F3),
+        accentColor: Colors.blue[900],
       ),
     ).modular();
   }
