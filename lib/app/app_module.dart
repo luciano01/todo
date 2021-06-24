@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:todo/app/modules/add_task/addTask_module.dart';
 import 'package:todo/app/shared/repository/app_repository.dart';
 import 'package:todo/app/shared/models/todo_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -23,6 +24,11 @@ class AppModule extends Module {
     ModuleRoute(
       '/home',
       module: HomeModule(),
+      transition: TransitionType.rightToLeftWithFade,
+    ),
+    ModuleRoute(
+      '/addTask',
+      module: AddTaskModule(),
       transition: TransitionType.rightToLeftWithFade,
     ),
   ];
