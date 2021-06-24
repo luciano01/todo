@@ -1,9 +1,6 @@
 # To Do
 Simple to do list app to manage tasks.
 
-## Screenshots
-Soon...
-
 ## For developers
 > To clone locally
 ```
