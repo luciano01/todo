@@ -15,15 +15,21 @@ class ListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
+      padding: const EdgeInsets.only(
+        top: 8,
+        right: 16,
+      ),
       child: ListTile(
         leading: IconButton(
           icon: todo.isCompleted!
               ? Icon(
-                  Icons.check_circle,
+                  Icons.check_box,
                   color: Theme.of(context).accentColor,
                 )
-              : Icon(Icons.check_circle_outline),
+              : Icon(
+                  Icons.check_box_outline_blank,
+                  color: Theme.of(context).accentColor,
+                ),
           onPressed: onPressedCompleteTask,
         ),
         title: Text(
@@ -31,13 +37,29 @@ class ListItemWidget extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.normal,
             fontSize: 18,
+            decoration: todo.isCompleted!
+                ? TextDecoration.lineThrough
+                : TextDecoration.none,
           ),
         ),
         subtitle: Text(
-          '${todo.time!} - ${todo.date!}',
+          '${todo.date!.toDate().month}, ${todo.date!.toDate().day}, ${todo.date!.toDate().year}',
           style: TextStyle(
             fontWeight: FontWeight.normal,
             fontSize: 14,
+            decoration: todo.isCompleted!
+                ? TextDecoration.lineThrough
+                : TextDecoration.none,
+          ),
+        ),
+        trailing: Text(
+          todo.time!,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: 14,
+            decoration: todo.isCompleted!
+                ? TextDecoration.lineThrough
+                : TextDecoration.none,
           ),
         ),
         onTap: onTap,

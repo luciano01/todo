@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:todo/app/shared/models/todo_store.dart';
@@ -37,10 +38,9 @@ abstract class HomeStoreBase with Store {
   }
 
   void save({TodoStore? todo}) {
-    String date = '${DateTime.now().month}/${DateTime.now().day}';
     String time = '${TimeOfDay.now().hour}:${TimeOfDay.now().minute}';
     if (todo!.uid == null) {
-      if (todo.date == null) todo.setDate(date);
+      if (todo.date == null) todo.setDate(Timestamp.fromDate(DateTime.now()));
       if (todo.time == null) todo.setTime(time);
       _repository.create(todo: todo);
     } else {

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -25,7 +26,7 @@ abstract class _AddTaskStoreBase with Store {
   }
 
   void save({TodoStore? todo}) {
-    String date = '${DateTime.now().month}/${DateTime.now().day}';
+    Timestamp date = Timestamp.fromDate(DateTime.now());
     String time = '${TimeOfDay.now().hour}:${TimeOfDay.now().minute}';
     if (todo!.uid == null) {
       if (todo.date == null) todo.setDate(date);

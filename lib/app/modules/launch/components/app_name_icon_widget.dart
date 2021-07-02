@@ -12,12 +12,13 @@ class AppNameIconWidget extends StatelessWidget {
           'TOD',
           style: TextStyle(
             fontSize: 70,
-            color: Colors.white,
+            color: Color(0xFF212121),
           ),
         ),
+        SizedBox(width: 3),
         Image.asset(
-          'assets/images/iconWhite.png',
-          width: 50,
+          'assets/images/icon.png',
+          width: 55,
         ),
       ],
     );

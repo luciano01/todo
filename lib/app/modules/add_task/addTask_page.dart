@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:todo/app/modules/add_task/addTask_store.dart';
@@ -14,12 +15,17 @@ class AddTaskPage extends StatefulWidget {
 class AddTaskPageState extends State<AddTaskPage> {
   final AddTaskStore store = Modular.get();
 
+  var dateTimeNow = Timestamp.fromDate(DateTime.now());
+  String? _dateNow;
+
   TodoStore? _todo;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     _todo = widget.todo ?? TodoStore();
+    _dateNow =
+        '${dateTimeNow.toDate().month}, ${dateTimeNow.toDate().day}, ${dateTimeNow.toDate().year}';
     super.initState();
   }
 
@@ -30,7 +36,6 @@ class AddTaskPageState extends State<AddTaskPage> {
       appBar: AppBar(
         title: Text(_todo!.uid == null ? 'Create a New Task' : 'Update a Task'),
         elevation: 0,
-        centerTitle: true,
       ),
       body: Form(
         key: _formKey,
@@ -45,19 +50,22 @@ class AddTaskPageState extends State<AddTaskPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _textField(
-                      hintText: 'Task name',
-                      initialValue: _todo!.name,
-                      validator: store.validateTaskName,
-                      onChanged: _todo!.setName,
-                      keyboardType: TextInputType.text,
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: _textField(
+                        hintText: 'Task name',
+                        initialValue: _todo!.name,
+                        validator: store.validateTaskName,
+                        onChanged: _todo!.setName,
+                        keyboardType: TextInputType.text,
+                      ),
                     ),
                     Observer(builder: (context) {
                       return _listTile(
                         title: _todo!.date == null
-                            ? '${DateTime.now().month}/${DateTime.now().day}'
-                            : _todo!.date!,
-                        subTitle: 'Select a date',
+                            ? '$_dateNow'
+                            : '${_todo!.date!.toDate().month}, ${_todo!.date!.toDate().day}, ${_todo!.date!.toDate().year}',
+                        subTitle: 'Choose a date',
                         onTap: () async {
                           DateTime? picked = await showDatePicker(
                             context: context,
@@ -77,7 +85,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                             },
                           );
                           if (picked != null) {
-                            String date = '${picked.month}/${picked.day}';
+                            Timestamp date = Timestamp.fromDate(picked);
                             _todo!.setDate(date);
                           }
                         },
@@ -92,7 +100,7 @@ class AddTaskPageState extends State<AddTaskPage> {
                         title: _todo!.time == null
                             ? '${TimeOfDay.now().hour}:${TimeOfDay.now().minute}'
                             : _todo!.time!,
-                        subTitle: 'Select a time',
+                        subTitle: 'Choose a time',
                         onTap: () async {
                           TimeOfDay? picked = await showTimePicker(
                             context: context,
@@ -132,22 +140,24 @@ class AddTaskPageState extends State<AddTaskPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: 60,
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: 48,
                       margin: EdgeInsets.only(top: 32),
-                      child: ElevatedButton(
-                        child: Text(_todo!.uid == null
-                            ? 'Create Task'.toUpperCase()
-                            : 'Update Task'.toUpperCase()),
+                      child: ElevatedButton.icon(
+                        icon: Icon(
+                          Icons.save,
+                          color: Color(0xFF212121),
+                        ),
+                        label: Text(
+                          'Save',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Color(0xFF212121),
+                          ),
+                        ),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
                               Theme.of(context).accentColor),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                          ),
                         ),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {

@@ -27,13 +27,13 @@ mixin _$TodoStore on _TodoStoreBase, Store {
   final _$dateAtom = Atom(name: '_TodoStoreBase.date');
 
   @override
-  String? get date {
+  Timestamp? get date {
     _$dateAtom.reportRead();
     return super.date;
   }
 
   @override
-  set date(String? value) {
+  set date(Timestamp? value) {
     _$dateAtom.reportWrite(value, super.date, () {
       super.date = value;
     });
@@ -80,7 +80,7 @@ mixin _$TodoStore on _TodoStoreBase, Store {
   }
 
   @override
-  dynamic setDate(String value) {
+  dynamic setDate(Timestamp value) {
     final _$actionInfo = _$_TodoStoreBaseActionController.startAction(
         name: '_TodoStoreBase.setDate');
     try {

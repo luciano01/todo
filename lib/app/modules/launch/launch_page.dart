@@ -1,6 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:todo/app/modules/launch/components/app_name_icon_widget.dart';
-import 'package:todo/app/modules/launch/components/background_image_widget.dart';
 import 'package:todo/app/modules/launch/launch_store.dart';
 import 'package:flutter/material.dart';
 
@@ -30,21 +29,12 @@ class LaunchPageState extends State<LaunchPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF2196F3),
-              Color(0xFF0D47A1),
+              Color(0xFFFFC107),
+              Color(0xFFC79100),
             ],
           ),
         ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Positioned(
-              left: -80,
-              child: BackgroundImageWidget(),
-            ),
-            AppNameIconWidget(),
-          ],
-        ),
+        child: AppNameIconWidget(),
       ),
     );
   }

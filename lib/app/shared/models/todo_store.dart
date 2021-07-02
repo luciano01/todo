@@ -8,7 +8,7 @@ class TodoStore extends _TodoStoreBase with _$TodoStore {
     String? uid,
     String? name,
     bool? isCompleted = false,
-    String? date,
+    Timestamp? date,
     String? time,
   }) : super(
           uid: uid,
@@ -44,7 +44,7 @@ abstract class _TodoStoreBase with Store {
   bool? isCompleted = false;
 
   @observable
-  String? date;
+  Timestamp? date;
 
   @observable
   String? time;
@@ -64,7 +64,7 @@ abstract class _TodoStoreBase with Store {
   setIsCompleted(bool value) => isCompleted = value;
 
   @action
-  setDate(String value) => date = value;
+  setDate(Timestamp value) => date = value;
 
   @action
   setTime(String value) => time = value;
