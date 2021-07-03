@@ -27,7 +27,7 @@ abstract class _AddTaskStoreBase with Store {
 
   void save({TodoStore? todo}) {
     Timestamp date = Timestamp.fromDate(DateTime.now());
-    String time = '${TimeOfDay.now().hour}:${TimeOfDay.now().minute}';
+    String time = '${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toStringAsPrecision(2)}';
     if (todo!.uid == null) {
       if (todo.date == null) todo.setDate(date);
       if (todo.time == null) todo.setTime(time);

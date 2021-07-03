@@ -51,8 +51,37 @@ class _HomePageState extends State<HomePage> {
             return Center(child: Text('$error'));
           }
 
-          if (listAllTasks == null || listAllTasks.isEmpty) {
-            return Center(child: CircularProgressIndicator());
+          if (listAllTasks == null) {
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).accentColor),
+              ),
+            );
+          }
+
+          if (listAllTasks.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/empty.png',
+                    width: 200,
+                  ),
+                  Text(
+                    'Oops!',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'You don\'t have any Task.',
+                    style: TextStyle(),
+                  ),
+                ],
+              ),
+            );
           }
 
           return _buildList(listAllTasks: listAllTasks);
@@ -69,6 +98,7 @@ class _HomePageState extends State<HomePage> {
 
         return ListItemWidget(
           todo: todo,
+          dateConvert: dateConvert,
           onPressedCompleteTask: () {
             todo.isCompleted = !todo.isCompleted!;
             store.update(todo: todo);

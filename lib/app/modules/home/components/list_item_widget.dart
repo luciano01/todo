@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:todo/app/shared/models/todo_store.dart';
+import 'package:todo/app/shared/utils/date_convert.dart';
 
 class ListItemWidget extends StatelessWidget {
   final TodoStore todo;
   final void Function()? onPressedCompleteTask;
   final void Function()? onTap;
+  final DateConvert dateConvert;
   const ListItemWidget({
     Key? key,
     required this.todo,
     required this.onPressedCompleteTask,
     required this.onTap,
+    required this.dateConvert,
   }) : super(key: key);
 
   @override
@@ -43,7 +46,7 @@ class ListItemWidget extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          '${todo.date!.toDate().month}, ${todo.date!.toDate().day}, ${todo.date!.toDate().year}',
+          '${dateConvert.monthIntoName(todo.date!.toDate().month)}, ${todo.date!.toDate().day}, ${todo.date!.toDate().year}',
           style: TextStyle(
             fontWeight: FontWeight.normal,
             fontSize: 14,
